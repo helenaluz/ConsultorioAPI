@@ -1,6 +1,6 @@
-﻿namespace ConsultorioAPI.Models
+﻿namespace ConsultorioAPI.DTOs
 {
-    public class Paciente
+    public class PacienteDTO
     {
         public int Id { get; set; }
         public string Nome { get; set; } = string.Empty;
@@ -11,6 +11,5 @@
         public string Endereco { get; set; } = string.Empty;
         public string Sexo { get; set; } = string.Empty;
         public string TipoSanguineo { get; set; } = string.Empty;
-        public ICollection<Consulta> Consultas { get; set; }
     }
 }
