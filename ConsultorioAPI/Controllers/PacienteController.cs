@@ -17,6 +17,15 @@ namespace ConsultorioAPI.Controllers
             _service = service;
         }
 
+        [HttpPost]
+        public async Task<ActionResult<Paciente>> CreatePaciente(PacienteDTO paciente)
+        {
+            if (paciente == null) return BadRequest("Preencha os campos!");
+            var model = await _service.CreatePaciente(paciente);
+            if (model is null) return BadRequest("Não foi possível criar o Paciente!");
+            return Ok(model);
+        }
+
         [HttpGet]
         public async Task<ActionResult<List<Paciente>>> GetAllPacientes(int? idade_maior_que)
         {
@@ -39,19 +48,11 @@ namespace ConsultorioAPI.Controllers
         }
 
         [HttpPut("{Id}")]
-        public async Task<ActionResult> UpdatePaciente(int Id, [FromBody] string telefone)
+        public async Task<ActionResult<Paciente>> UpdatePaciente(int Id, [FromBody] string telefone)
         {
-    
-            await _service.UpdatePaciente(Id, telefone);
-            return Ok("Telefone atualizado com sucesso!");
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> CreatePaciente(PacienteDTO paciente)
-        {
-            if (paciente == null) return BadRequest("Preencha os campos!");
-            await _service.CreatePaciente(paciente);
-            return Ok(paciente.Nome + " criado com sucesso!");
+            var paciente = await _service.UpdatePaciente(Id, telefone);
+            if (paciente is null) return NotFound($"Paciente {Id} não encontrado.");
+            return Ok(paciente);
         }
 
         [HttpGet("sangue/{tipo}")]
@@ -61,11 +62,11 @@ namespace ConsultorioAPI.Controllers
         }
 
         [HttpPatch("{Id}")]
-        public async Task<ActionResult> UpdateEnderecoPaciente([FromBody] string endereco, int Id)
+        public async Task<ActionResult<Paciente>> UpdateEnderecoPaciente([FromBody] string endereco, int Id)
         {
-           
-            await _service.UpdateEnderecoPaciente(endereco, Id);
-            return Ok(" Paciente atualizado com sucesso!");
+            var paciente = await _service.UpdateEnderecoPaciente(endereco, Id);
+            if (paciente is null) return NotFound($"Paciente {Id} não encontrado.");
+            return Ok(paciente);
         }
     }
 }

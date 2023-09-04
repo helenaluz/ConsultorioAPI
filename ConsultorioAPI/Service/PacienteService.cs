@@ -21,17 +21,18 @@ GetPacientesBySangue : GET !*/
 
         public async Task<List<Consulta>> GetPacienteConsultaById(int id) {  return await _con.Consultas.Where(c => c.PacienteId == id).ToListAsync(); }
 
-        public async Task UpdatePaciente(int Id, string telefone)
+        public async Task<Paciente> UpdatePaciente(int Id, string telefone)
         {
             var existente = await _con.Pacientes.FindAsync(Id);
-            if (existente is null) return;
+            if (existente is null) return null;
 
             existente.Telefone = telefone;
 
             await _con.SaveChangesAsync();
+            return existente;
         }
 
-        public async Task CreatePaciente(PacienteDTO paciente)
+        public async Task<Paciente> CreatePaciente(PacienteDTO paciente)
         {
             Paciente novo = new Paciente
             {
@@ -45,6 +46,7 @@ GetPacientesBySangue : GET !*/
             };
             _con.Pacientes.Add(novo);
             await _con.SaveChangesAsync();
+            return novo;
         }
 
         public async Task<List<Paciente>> GetPacienteByIdade(int Idade) { 
@@ -53,12 +55,13 @@ GetPacientesBySangue : GET !*/
             return await _con.Pacientes.Where(p => p.Nascimento.Date <= AnoNascimento).ToListAsync(); 
         }
         public async Task<List<Paciente>> GetPacienteByTipoSanguineo(string tipo) { return await _con.Pacientes.Where(p => p.TipoSanguineo == tipo).ToListAsync(); }
-        public async Task UpdateEnderecoPaciente(string endereco, int Id)
+        public async Task<Paciente> UpdateEnderecoPaciente(string endereco, int Id)
         {
             var paciente = _con.Pacientes.FirstOrDefault(p => p.Id == Id);
-            if (paciente == null) return ;
+            if (paciente == null) return null;
             paciente.Endereco = endereco;
             await _con.SaveChangesAsync();
+            return paciente;
         }
 
         public async Task<List<Paciente>> GetAllPacientes()

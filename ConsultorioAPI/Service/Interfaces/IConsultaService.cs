@@ -5,9 +5,9 @@ namespace ConsultorioAPI.Service.Interfaces
 {
     public interface IConsultaService
     {
-        Task CreateConsulta(ConsultaDTO consulta);
-        Task UpdateConsulta(ConsultaDTO consulta, int Id);
-        Task DeleteConsulta(int Id);
+        Task<Consulta> CreateConsulta(ConsultaDTO consulta);
+        Task<Consulta> UpdateConsulta(ConsultaDTO consulta, int Id);
+        Task<Consulta> DeleteConsulta(int Id);
         Task<List<Consulta>> GetAllConsultas();
         Task<List<Consulta>> GetAllConsultasData(DateTime data);
     }

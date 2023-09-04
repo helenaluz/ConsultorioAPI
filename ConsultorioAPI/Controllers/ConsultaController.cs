@@ -14,26 +14,29 @@ namespace ConsultorioAPI.Controllers
         public ConsultaController(IConsultaService service) { _service = service; }
 
         [HttpPost]
-        public async Task<ActionResult> CreateConsulta(ConsultaDTO consulta)
+        public async Task<ActionResult<Consulta>> CreateConsulta(ConsultaDTO consulta)
         {
-            if (consulta == null) { return BadRequest("Preencha os campos!"); }
-            await _service.CreateConsulta(consulta);
-            return Ok(consulta);
+            if (consulta == null) return BadRequest("Preencha os campos!");
+            var model = await _service.CreateConsulta(consulta);
+            if (model is null) return BadRequest("Não foi possível criar a Consulta!");
+            return Ok(model);
         }
 
         [HttpPut("{Id}")]
-        public async Task<ActionResult> UpdateConsulta(ConsultaDTO consulta, int Id)
+        public async Task<ActionResult<Consulta>> UpdateConsulta(ConsultaDTO consulta, int Id)
         {
             if (consulta.Id != Id) return NotFound("IDs não combinam");
-            await _service.UpdateConsulta(consulta, Id);
-            return Ok("Consulta atualizada com sucesso!");
+            var model = await _service.UpdateConsulta(consulta, Id);
+            if (model is null) return NotFound($"Consulta {Id} não encontrada.");
+            return Ok(model);
         }
 
         [HttpDelete("{Id}")]
-        public async Task<ActionResult> DeleteConsulta(int Id)
+        public async Task<ActionResult<Consulta>> DeleteConsulta(int Id)
         {
-            await _service.DeleteConsulta(Id);
-            return Ok("Consulta deleetada com sucesso!");
+            var model = await _service.DeleteConsulta(Id);
+            if (model is null) return NotFound($"Consulta {Id} não encontrada.");
+            return Ok(model);
         }
 
         [HttpGet]
