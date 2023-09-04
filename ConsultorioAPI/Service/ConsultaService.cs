@@ -56,6 +56,11 @@ namespace ConsultorioAPI.Service
             await _con.SaveChangesAsync();
         }
 
+        public async Task<List<Consulta>> GetAllConsultas()
+        {
+            return await _con.Consultas.ToListAsync();
+        }
+
         public async Task<List<Consulta>> GetAllConsultasData(DateTime data)
         {
             data = data.Date;

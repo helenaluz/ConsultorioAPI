@@ -6,6 +6,7 @@ namespace ConsultorioAPI.Service.Interfaces
     public interface IMedicoService
     {
         Task<List<Consulta>> GetAllConsultasMedicoById(int id);
+        Task<List<Medico>> GetAllMedicos();
         Task<List<Medico>> GetAllMedicosByEspecialidade(string especialidade);
         Task<List<Medico>> GetAllMedicosDisponiveis(DateTime data, string especialidade);
         Task<Medico> CreateMedico(MedicoDTO request);

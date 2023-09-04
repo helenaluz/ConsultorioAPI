@@ -25,10 +25,11 @@ namespace ConsultorioAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Medico>>> GetAllMedicosByEspecialidade([FromQuery] string especialidade)
+        public async Task<ActionResult<List<Medico>>> GetAllMedicosByEspecialidade([FromQuery] string? especialidade)
         {
-            var medicos = await _medicoService.GetAllMedicosByEspecialidade(especialidade);
-            return Ok(medicos);
+            if (especialidade is null) return Ok(await _medicoService.GetAllMedicos());
+
+            return Ok(await _medicoService.GetAllMedicosByEspecialidade(especialidade));
         }
 
         [HttpGet("disponiveis")]

@@ -37,9 +37,11 @@ namespace ConsultorioAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Consulta>>> GetAllConsultasData(DateTime data)
+        public async Task<ActionResult<List<Consulta>>> GetAllConsultasData(DateTime? data)
         {
-            return await _service.GetAllConsultasData(data);
+            if (data is null) return Ok(await _service.GetAllConsultas());
+
+            return Ok(await _service.GetAllConsultasData(data ?? DateTime.Now));
         }
     }
 }

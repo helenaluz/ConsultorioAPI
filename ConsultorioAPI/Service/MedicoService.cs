@@ -18,6 +18,11 @@ namespace ConsultorioAPI.Service
                 .ToListAsync();
         }
 
+        public async Task<List<Medico>> GetAllMedicos()
+        {
+            return await _con.Medicos.ToListAsync();
+        }
+
         public async Task<List<Medico>> GetAllMedicosByEspecialidade(string especialidade)
         {
             especialidade = especialidade.ToUpper();
