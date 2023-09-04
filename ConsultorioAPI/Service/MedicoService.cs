@@ -49,14 +49,15 @@ namespace ConsultorioAPI.Service
         public async Task<Medico> GetMedicoByCrm(string crm)
         {
             crm = crm.ToUpper();
-            var medico = await _con.Medicos
-                .Where(m => m.CRM.ToUpper() == crm)
-                .FirstOrDefaultAsync();
+            var medico = await _con.Medicos.FirstOrDefaultAsync(m => m.CRM.ToUpper() == crm);
             return medico;
         }
 
         public async Task<Medico> CreateMedico(MedicoDTO request)
         {
+            var crmExistente = await _con.Medicos.FirstOrDefaultAsync(m => m.CRM.ToUpper() == request.CRM.ToUpper());
+            if (crmExistente is not null) return null;
+
             Medico medico = new Medico{
                 Nome = request.Nome,
                 CRM = request.CRM,
