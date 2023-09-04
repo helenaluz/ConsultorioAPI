@@ -29,7 +29,7 @@ namespace ConsultorioAPI.Controllers
             return Ok(await _service.GetPacienteById(Id));
         }
 
-        [HttpGet("consulta/{Id}")]
+        [HttpGet("{Id}/consulta")]
         public async Task<ActionResult<List<Consulta>>> GetPacienteConsultaById(int Id)
         {
            return Ok(await  _service.GetPacienteConsultaById(Id));
