@@ -1,20 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ConsultorioAPI.Service.Interfaces;
-using ConsultorioAPI.Models;
-using ConsultorioAPI.Data;
+﻿using ConsultorioAPI.Data;
 using ConsultorioAPI.DTOs;
+using ConsultorioAPI.Models;
+using ConsultorioAPI.Service.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConsultorioAPI.Service
 {
     public class MedicoService : IMedicoService
     {
-        private readonly DataContext _dataContext;
-
-        public MedicoService(DataContext dataContext) { _dataContext = dataContext; }
+        private readonly DataContext _con;
+        public MedicoService(DataContext con) { _con = con; }
 
         public async Task<List<Consulta>> GetAllConsultasMedicoById(int id)
         {
-            return await _dataContext.Consultas
+            return await _con.Consultas
                 .Where(c => c.MedicoId == id)
                 .ToListAsync();
         }
@@ -22,7 +21,7 @@ namespace ConsultorioAPI.Service
         public async Task<List<Medico>> GetAllMedicosByEspecialidade(string especialidade)
         {
             especialidade = especialidade.ToUpper();
-            return await _dataContext.Medicos
+            return await _con.Medicos
                 .Where(m => m.Especialidade.ToUpper() == especialidade)
                 .ToListAsync();
         }
@@ -30,14 +29,14 @@ namespace ConsultorioAPI.Service
         public async Task<List<Medico>> GetAllMedicosDisponiveis(DateTime data, string especialidade)
         {
             var dia = data.Date;
-            var idMedicosConsulta = await _dataContext.Consultas
+            var idMedicosConsulta = await _con.Consultas
                 .Where(c => c.DataConsulta.Date == dia)
                 .Select(c => c.MedicoId)
                 .Distinct()
                 .ToListAsync();
 
             especialidade = especialidade.ToUpper();
-            return await _dataContext.Medicos
+            return await _con.Medicos
                 .Where(m => (m.Especialidade.ToUpper() == especialidade) && (!idMedicosConsulta.Contains(m.Id)))
                 .ToListAsync();
         }
@@ -54,31 +53,31 @@ namespace ConsultorioAPI.Service
                 Sexo = request.Sexo,
                 AnoFormacao = request.AnoFormacao,
             };
-            await _dataContext.Medicos.AddAsync(medico);
-            await _dataContext.SaveChangesAsync();
+            await _con.Medicos.AddAsync(medico);
+            await _con.SaveChangesAsync();
             return medico;
         }
 
         public async Task<Medico> UpdateMedico(int id, MedicoDTOContato request)
         {
-            var medico = await _dataContext.Medicos.FindAsync(id);
+            var medico = await _con.Medicos.FindAsync(id);
             if (medico is null) return null;
 
             medico.Telefone = request.Telefone;
             medico.Endereco = request.Endereco;
 
-            await _dataContext.SaveChangesAsync();
+            await _con.SaveChangesAsync();
             return medico;
         }
 
         public async Task<Medico> UpdateEspecialidade(int id, string especialidade)
         {
-            var medico = await _dataContext.Medicos.FindAsync(id);
+            var medico = await _con.Medicos.FindAsync(id);
             if (medico is null) return null;
 
             medico.Especialidade = especialidade;
 
-            await _dataContext.SaveChangesAsync();
+            await _con.SaveChangesAsync();
             return medico;
         }
     }

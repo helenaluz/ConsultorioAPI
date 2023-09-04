@@ -54,9 +54,9 @@ GetPacientesBySangue : GET !*/
         }
 
         public async Task<List<Paciente>> GetPacienteByIdade(int Idade) { 
-            DateTime AnoNascimento = DateTime.Now.AddYears(-Idade);
+            DateTime AnoNascimento = DateTime.Now.AddYears(-Idade).Date;
 
-            return await _con.Pacientes.Where(p => p.Nascimento.Date <= AnoNascimento.Date).ToListAsync(); 
+            return await _con.Pacientes.Where(p => p.Nascimento.Date <= AnoNascimento).ToListAsync(); 
         }
         public async Task<List<Paciente>> GetPacienteByTipoSanguineo(string tipo) { return await _con.Pacientes.Where(p => p.TipoSanguineo == tipo).ToListAsync(); }
         public async Task UpdateEnderecoPaciente(string endereco, int Id)

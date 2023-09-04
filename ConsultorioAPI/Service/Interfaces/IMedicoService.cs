@@ -1,5 +1,5 @@
-﻿using ConsultorioAPI.Models;
-using ConsultorioAPI.DTOs;
+﻿using ConsultorioAPI.DTOs;
+using ConsultorioAPI.Models;
 
 namespace ConsultorioAPI.Service.Interfaces
 {

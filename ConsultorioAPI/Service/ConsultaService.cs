@@ -16,11 +16,8 @@ namespace ConsultorioAPI.Service
 {
     public class ConsultaService : IConsultaService
     {
-        protected readonly DataContext _con;
-        public ConsultaService(DataContext con)
-        {
-            _con = con;
-        }
+        private readonly DataContext _con;
+        public ConsultaService(DataContext con) { _con = con; }
 
         public async Task CreateConsulta(ConsultaDTO consulta)
         {
@@ -63,8 +60,5 @@ namespace ConsultorioAPI.Service
         {
             return await _con.Consultas.Where(c => c.MedicoId == MedicoId).Where(c => c.DataConsulta == data).ToListAsync();
         }
-
-       
-
     }
 }
