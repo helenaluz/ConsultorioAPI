@@ -20,9 +20,6 @@ namespace ConsultorioAPI.Data
              1 (paciente) -> N (consultas)
              */
 
-            modelBuilder.Entity<Consulta>()
-                 .HasKey(c => new { c.MedicoId, c.PacienteId });
-
             modelBuilder.Entity<Paciente>()
                 .HasMany(p => p.Consultas).WithOne(c => c.Paciente)
                 .HasForeignKey(c => c.PacienteId)

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ConsultorioAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class correcao : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -54,17 +54,18 @@ namespace ConsultorioAPI.Migrations
                 name: "Consultas",
                 columns: table => new
                 {
-                    MedicoId = table.Column<int>(type: "int", nullable: false),
-                    PacienteId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     DataConsulta = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Prescricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Retorno = table.Column<bool>(type: "bit", nullable: false)
+                    Retorno = table.Column<bool>(type: "bit", nullable: false),
+                    MedicoId = table.Column<int>(type: "int", nullable: false),
+                    PacienteId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Consultas", x => new { x.MedicoId, x.PacienteId });
+                    table.PrimaryKey("PK_Consultas", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Consultas_Medicos_PacienteId",
                         column: x => x.PacienteId,

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConsultorioAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230904195926_correcao")]
-    partial class correcao
+    [Migration("20230904203240_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,11 @@ namespace ConsultorioAPI.Migrations
 
             modelBuilder.Entity("ConsultorioAPI.Models.Consulta", b =>
                 {
-                    b.Property<int>("MedicoId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("PacienteId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DataConsulta")
                         .HasColumnType("datetime2");
@@ -40,7 +40,10 @@ namespace ConsultorioAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("MedicoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PacienteId")
                         .HasColumnType("int");
 
                     b.Property<string>("Prescricao")
@@ -50,7 +53,7 @@ namespace ConsultorioAPI.Migrations
                     b.Property<bool>("Retorno")
                         .HasColumnType("bit");
 
-                    b.HasKey("MedicoId", "PacienteId");
+                    b.HasKey("Id");
 
                     b.HasIndex("PacienteId");
 
