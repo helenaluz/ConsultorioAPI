@@ -18,8 +18,13 @@ namespace ConsultorioAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Paciente>>> GetAllPacientes()
+        public async Task<ActionResult<List<Paciente>>> GetAllPacientes(int? idade_maior_que)
         {
+            if (idade_maior_que is not null)
+            {
+                if (idade_maior_que <= 0) return BadRequest("Idade precisa ser maior que 0!");
+                return Ok(await _service.GetPacienteByIdade(idade_maior_que ?? 0));
+            }
             return Ok(await _service.GetAllPacientes());
         }
 
@@ -49,13 +54,6 @@ namespace ConsultorioAPI.Controllers
             if (paciente == null) return BadRequest("Preencha os campos!");
             await _service.CreatePaciente(paciente);
             return Ok(paciente.Nome + " criado com sucesso!");
-        }
-
-        [HttpGet("idade/{Idade}")]
-        public async Task<ActionResult<List<Paciente>>> GetPacienteByIdade(int Idade)
-        {
-            if (Idade <= 0) return BadRequest("Idade precisa ser maior que 0!");
-            return Ok(await _service.GetPacienteByIdade(Idade));
         }
 
         [HttpGet("sangue/{tipo}")]
