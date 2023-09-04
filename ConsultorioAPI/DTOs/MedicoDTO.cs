@@ -1,4 +1,4 @@
-namespace ConsultorioAPI.DTOs
+namespace ConsultorioAPI.Models
 {
     public class MedicoDTO
     {
@@ -9,6 +9,6 @@ namespace ConsultorioAPI.DTOs
         public string Endereco { get; set; } = string.Empty;
         public DateTime DataNascimento { get; set; }
         public string Sexo { get; set; } = string.Empty;
-        public DateTime AnoFormacao { get; set; }
+        public int AnoFormacao { get; set; }
     }
 }
