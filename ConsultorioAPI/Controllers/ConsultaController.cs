@@ -36,10 +36,10 @@ namespace ConsultorioAPI.Controllers
             return Ok("Consulta deleetada com sucesso!");
         }
 
-        [HttpGet("{MedicoId}")]
-        public async Task<ActionResult<List<Consulta>>> GetConsultaDataByMedicoId(int MedicoId, DateTime data)
+        [HttpGet]
+        public async Task<ActionResult<List<Consulta>>> GetAllConsultasData(DateTime data)
         {
-            return await _service.GetConsultaDataByMedicoId(MedicoId, data);
+            return await _service.GetAllConsultasData(data);
         }
     }
 }

@@ -56,9 +56,10 @@ namespace ConsultorioAPI.Service
             await _con.SaveChangesAsync();
         }
 
-        public async Task<List<Consulta>> GetConsultaDataByMedicoId(int MedicoId, DateTime data)
+        public async Task<List<Consulta>> GetAllConsultasData(DateTime data)
         {
-            return await _con.Consultas.Where(c => c.MedicoId == MedicoId).Where(c => c.DataConsulta == data).ToListAsync();
+            data = data.Date;
+            return await _con.Consultas.Where(c => c.DataConsulta.Date == data).ToListAsync();
         }
     }
 }

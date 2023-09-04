@@ -8,6 +8,6 @@ namespace ConsultorioAPI.Service.Interfaces
         Task CreateConsulta(ConsultaDTO consulta);
         Task UpdateConsulta(ConsultaDTO consulta, int Id);
         Task DeleteConsulta(int Id);
-        Task<List<Consulta>> GetConsultaDataByMedicoId(int MedicoId, DateTime data);
+        Task<List<Consulta>> GetAllConsultasData(DateTime data);
     }
 }
