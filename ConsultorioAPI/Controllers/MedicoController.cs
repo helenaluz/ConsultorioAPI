@@ -67,5 +67,14 @@ namespace ConsultorioAPI.Controllers
             var medicos = await _medicoService.GetAllMedicosDisponiveis(data, especialidade);
             return Ok(medicos);
         }
+
+        [HttpGet("crm/{crm}")]
+        public async Task<ActionResult<Medico>> GetAllMedicosByFormacao(string crm)
+        {
+            var medico = await _medicoService.GetMedicoByCrm(crm);
+            if (medico is null) return NotFound($"Médico de CRM '{crm}' não encontrado.");
+
+            return Ok(medico);
+        }
     }
 }
