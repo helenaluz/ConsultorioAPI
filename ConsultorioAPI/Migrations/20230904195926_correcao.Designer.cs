@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConsultorioAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230904190109_idade no paciente")]
-    partial class idadenopaciente
+    [Migration("20230904195926_correcao")]
+    partial class correcao
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,8 +65,8 @@ namespace ConsultorioAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("AnoFormacao")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("AnoFormacao")
+                        .HasColumnType("int");
 
                     b.Property<string>("CRM")
                         .IsRequired()
@@ -115,9 +115,6 @@ namespace ConsultorioAPI.Migrations
                     b.Property<string>("Endereco")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Idade")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("Nascimento")
                         .HasColumnType("datetime2");

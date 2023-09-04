@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ConsultorioAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class inicial : Migration
+    public partial class correcao : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,7 +24,7 @@ namespace ConsultorioAPI.Migrations
                     Endereco = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataNascimento = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Sexo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AnoFormacao = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    AnoFormacao = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

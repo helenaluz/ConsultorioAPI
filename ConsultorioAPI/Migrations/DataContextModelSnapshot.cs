@@ -62,8 +62,8 @@ namespace ConsultorioAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("AnoFormacao")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("AnoFormacao")
+                        .HasColumnType("int");
 
                     b.Property<string>("CRM")
                         .IsRequired()
@@ -112,9 +112,6 @@ namespace ConsultorioAPI.Migrations
                     b.Property<string>("Endereco")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Idade")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("Nascimento")
                         .HasColumnType("datetime2");
