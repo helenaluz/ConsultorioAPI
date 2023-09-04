@@ -38,7 +38,9 @@ namespace ConsultorioAPI.Controllers
         [HttpGet("{Id}")]
         public async Task<ActionResult<Paciente>> GetPacienteById(int Id)
         {
-            return Ok(await _service.GetPacienteById(Id));
+            var paciente = await _service.GetPacienteById(Id);
+            if (paciente is null) return NotFound($"Paciente {Id} não encontrado.");
+            return Ok(paciente);
         }
 
         [HttpGet("{Id}/consulta")]
