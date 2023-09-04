@@ -21,18 +21,12 @@ GetPacientesBySangue : GET !*/
 
         public async Task<List<Consulta>> GetPacienteConsultaById(int id) {  return await _con.Consultas.Where(c => c.PacienteId == id).ToListAsync(); }
 
-        public async Task UpdatePaciente(PacienteDTO paciente, int Id)
+        public async Task UpdatePaciente(int Id, string telefone)
         {
-            if (Id != paciente.Id) return;
             var existente = await _con.Pacientes.FindAsync(Id);
+            if (existente is null) return;
 
-            existente.Nome = paciente.Nome;
-            existente.Nascimento = paciente.Nascimento;
-            existente.CPF = paciente.CPF;
-            existente.Telefone = paciente.Telefone;
-            existente.Endereco = paciente.Endereco;
-            existente.Sexo = paciente.Sexo;
-            existente.TipoSanguineo = paciente.TipoSanguineo;
+            existente.Telefone = telefone;
 
             await _con.SaveChangesAsync();
         }

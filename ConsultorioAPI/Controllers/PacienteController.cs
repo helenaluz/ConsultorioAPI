@@ -36,11 +36,11 @@ namespace ConsultorioAPI.Controllers
         }
 
         [HttpPut("{Id}")]
-        public async Task<ActionResult> UpdatePaciente(PacienteDTO paciente, int Id)
+        public async Task<ActionResult> UpdatePaciente(int Id, [FromBody] string telefone)
         {
     
-            await _service.UpdatePaciente(paciente, Id);
-            return Ok(paciente.Nome + " atualizado com sucesso!");
+            await _service.UpdatePaciente(Id, telefone);
+            return Ok("Telefone atualizado com sucesso!");
         }
 
         [HttpPost]
