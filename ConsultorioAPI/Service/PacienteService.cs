@@ -30,7 +30,6 @@ GetPacientesBySangue : GET !*/
             existente.Nascimento = paciente.Nascimento;
             existente.CPF = paciente.CPF;
             existente.Telefone = paciente.Telefone;
-            existente.Idade = paciente.Idade;
             existente.Endereco = paciente.Endereco;
             existente.Sexo = paciente.Sexo;
             existente.TipoSanguineo = paciente.TipoSanguineo;
@@ -46,7 +45,6 @@ GetPacientesBySangue : GET !*/
                 Nascimento = paciente.Nascimento,
                 CPF = paciente.CPF,
                 Telefone = paciente.Telefone,
-                Idade = paciente.Idade,
                 Endereco = paciente.Endereco,
                 Sexo = paciente.Sexo,
                 TipoSanguineo = paciente.TipoSanguineo
@@ -55,7 +53,11 @@ GetPacientesBySangue : GET !*/
             await _con.SaveChangesAsync();
         }
 
-        public async Task<List<Paciente>> GetPacienteByIdade(int Idade) {  return await _con.Pacientes.Where(p => p.Idade == Idade).ToListAsync(); }
+        public async Task<List<Paciente>> GetPacienteByIdade(int Idade) { 
+            DateTime AnoNascimento = DateTime.Now.AddYears(-Idade);
+
+            return await _con.Pacientes.Where(p => p.Nascimento.Date <= AnoNascimento.Date).ToListAsync(); 
+        }
         public async Task<List<Paciente>> GetPacienteByTipoSanguineo(string tipo) { return await _con.Pacientes.Where(p => p.TipoSanguineo == tipo).ToListAsync(); }
         public async Task UpdateEnderecoPaciente(string endereco, int Id)
         {
