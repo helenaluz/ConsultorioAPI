@@ -63,7 +63,7 @@ namespace ConsultorioAPI.Controllers
         }
 
         [HttpPatch("{Id}")]
-        public async Task<ActionResult> UpdateEnderecoPaciente(string endereco, int Id)
+        public async Task<ActionResult> UpdateEnderecoPaciente([FromBody] string endereco, int Id)
         {
            
             await _service.UpdateEnderecoPaciente(endereco, Id);
