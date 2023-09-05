@@ -2,6 +2,7 @@
 using ConsultorioAPI.Models;
 using ConsultorioAPI.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConsultorioAPI.Controllers
@@ -13,7 +14,7 @@ namespace ConsultorioAPI.Controllers
         private readonly IEmailService _service;
         public EmailController(IEmailService service) { _service = service; }
 
-        [HttpPut("confirmar/{chave}")]
+        [HttpGet("confirmar/{chave}")]
         public async Task<ActionResult<string>> ConfirmarEmail(string chave)
         {
             return await _service.ConfirmarEmail(chave);
@@ -25,7 +26,7 @@ namespace ConsultorioAPI.Controllers
             var paciente = await _service.GetPacienteById(id);
             if (paciente is null) return NotFound("Usuário não encontrado");
 
-            return await _service.PedirConfirmacao(paciente);
+            return await _service.PedirConfirmacao(paciente, Request.GetDisplayUrl().Replace($"solicitar/Paciente/{id}","confirmar/{chave}"));
         }
 
         [HttpGet("verificar/Paciente/{id}")]

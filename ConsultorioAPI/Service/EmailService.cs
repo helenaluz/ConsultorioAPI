@@ -5,7 +5,6 @@ using MimeKit;
 using ConsultorioAPI.Data;
 using ConsultorioAPI.Models;
 using ConsultorioAPI.Service.Interfaces;
-using System.Net;
 using Microsoft.EntityFrameworkCore;
 
 namespace ConsultorioAPI.Service
@@ -37,25 +36,36 @@ namespace ConsultorioAPI.Service
             return await _con.Pacientes.FindAsync(id);
         }
 
-        private async Task EnviarEmail(string tabela, int id, string emailDestino, string nomeDestino)
+        private async Task EnviarEmail(string tabela, int id, string emailDestino, string nomeDestino, string url)
         {
             int minutos = 30;
             var configSection = _config.GetSection("EmailStrings");
 
-            var token = new Token{
-                Tabela = tabela,
-                Id = id,
-                Chave = Guid.NewGuid().ToString(),
-                DataLimite = DateTime.Now.AddMinutes(minutos),
-            };
-            await _con.Tokens.AddAsync(token);
+            var token = await _con.Tokens.FindAsync(tabela, id);
+            if (token is null)
+            {
+                token = new Token{
+                    Tabela = tabela,
+                    Id = id,
+                    Chave = Guid.NewGuid().ToString(),
+                    DataLimite = DateTime.Now.AddMinutes(minutos),
+                };
+                await _con.Tokens.AddAsync(token);
+            }
+            else
+            {
+                token.Chave = Guid.NewGuid().ToString();
+                token.DataLimite = DateTime.Now.AddMinutes(minutos);
+            }
             await _con.SaveChangesAsync();
+
+            url = url.Replace("{chave}", token.Chave);
 
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(configSection["UserName"], configSection["Address"]));
             message.To.Add(MailboxAddress.Parse(emailDestino));
             message.Subject = "Confirmação de acesso ao ConsultasAPI";
-            message.Body = new TextPart(TextFormat.Html) { Text = $"{nomeDestino}, para acessar ao ConsultasAPI utilize a seguinte chave:<br>{token.Chave}<br>A confirmação deve ser feita em até {minutos} minutos." };
+            message.Body = new TextPart(TextFormat.Html) { Text = $"{nomeDestino},<br>Para acessar ao sistema ConsultasAPI confirme o seu e-mail <a href={url}>clicando aqui</a> ou pelo link abaixo:<br>{url}<br>A confirmação deve ser feita em até {minutos} minutos." };
 
             using var smtp = new SmtpClient();
             smtp.Connect(configSection["Host"], int.Parse(configSection["Port"] ?? string.Empty), SecureSocketOptions.StartTls);
@@ -70,14 +80,19 @@ namespace ConsultorioAPI.Service
             }
         }
 
-        public async Task<string> PedirConfirmacao(Paciente paciente)
+        private string FiltraEmail(string email)
         {
-            if (paciente.EmailConfirmado) return $"Email {paciente.Email} já confirmado!";
+            return $"{email.Substring(0,2)}************{email.Substring(email.IndexOf('@')-1)}";
+        }
+
+        public async Task<string> PedirConfirmacao(Paciente paciente, string url)
+        {
+            if (paciente.EmailConfirmado) return $"Email {FiltraEmail(paciente.Email)} já confirmado!";
             if (paciente.Email == string.Empty) return $"Email não preenchido!";
 
-            await EnviarEmail("Paciente", paciente.Id, paciente.Email, paciente.Nome);
+            await EnviarEmail("Paciente", paciente.Id, paciente.Email, paciente.Nome, url);
 
-            return $"Solicitação enviada para: {paciente.Email.Substring(0,2)}************{paciente.Email.Substring(paciente.Email.IndexOf('@')-1)}";
+            return $"Solicitação enviada para: {FiltraEmail(paciente.Email)}";
         }
 
 		public async Task<string> GetConfirmouEmail(Paciente paciente)
