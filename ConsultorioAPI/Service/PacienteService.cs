@@ -42,7 +42,8 @@ GetPacientesBySangue : GET !*/
                 Telefone = paciente.Telefone,
                 Endereco = paciente.Endereco,
                 Sexo = paciente.Sexo,
-                TipoSanguineo = paciente.TipoSanguineo
+                TipoSanguineo = paciente.TipoSanguineo,
+                Email = paciente.Email
             };
             _con.Pacientes.Add(novo);
             await _con.SaveChangesAsync();

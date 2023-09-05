@@ -10,5 +10,6 @@
         public string Endereco { get; set; } = string.Empty;
         public string Sexo { get; set; } = string.Empty;
         public string TipoSanguineo { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
     }
 }

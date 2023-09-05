@@ -10,6 +10,7 @@ namespace ConsultorioAPI.Data
         public DbSet<Medico> Medicos { get; set; }
         public DbSet<Paciente> Pacientes { get; set; }
         public DbSet<Consulta> Consultas { get; set; }
+        public DbSet<Token> Tokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,6 +30,9 @@ namespace ConsultorioAPI.Data
                 .HasMany(m => m.Consultas).WithOne(c => c.Medico)
                 .HasForeignKey(c => c.PacienteId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Token>()
+                .HasKey(t => new { t.Tabela, t.Id });
         }
     }
 }

@@ -10,6 +10,8 @@
         public string Endereco { get; set; } = string.Empty;
         public string Sexo { get; set; } = string.Empty;
         public string TipoSanguineo { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public bool EmailConfirmado { get; set; }
         public ICollection<Consulta> Consultas { get; set; }
 
     }

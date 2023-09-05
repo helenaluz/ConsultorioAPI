@@ -13,6 +13,11 @@ ConsultorioAPI é uma API REST desenvolvida em .NET 7.0 para gerenciar informaç
 - `PUT /api/Consulta/{Id}`: Atualiza todos os dados de uma consulta pelo Id.
 - `DELETE /api/Consulta/{Id}`: Remove uma consulta pelo Id.
 
+### Email
+- `PUT /api/confirmar/{chave}`: Confirma um e-mail a partir da chave de acesso enviada.
+- `POST /api/Email/solicitar/Paciente/{id}`: Solicita a confirmação do e-mail do paciente pelo Id.
+- `GET /api/Email/verificar/Paciente/{id}`: Retorna se o e-mail do paciente está confirmado.
+
 ### Medico
 - `POST /api/Medico`: Cria um novo médico.
 - `GET /api/Medico`: Retorna todos os médicos, com parâmetro opcional para filtrar por especialidade.
@@ -34,4 +39,5 @@ ConsultorioAPI é uma API REST desenvolvida em .NET 7.0 para gerenciar informaç
 ## Tecnologias Utilizadas
 - .NET 7.0
 - Entity Framework Core
+- MailKit
 - SQL Server
