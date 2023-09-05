@@ -64,8 +64,8 @@ namespace ConsultorioAPI.Service
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(configSection["UserName"], configSection["Address"]));
             message.To.Add(MailboxAddress.Parse(emailDestino));
-            message.Subject = "Confirmação de acesso ao ConsultasAPI";
-            message.Body = new TextPart(TextFormat.Html) { Text = $"{nomeDestino},<br>Para acessar ao sistema ConsultasAPI confirme o seu e-mail <a href={url}>clicando aqui</a> ou pelo link abaixo:<br>{url}<br>A confirmação deve ser feita em até {minutos} minutos." };
+            message.Subject = "Confirmação de e-mail";
+            message.Body = new TextPart(TextFormat.Html) { Text = $"{nomeDestino},<br>Para confirmar o seu e-mail junto ao sistema ConsultorioAPI <a href={url}>clique aqui</a> ou acesse o link abaixo:<br><br>{url}<br><br>O link expira em {minutos} minutos, após isto será necessário solicitar uma nova confirmação." };
 
             using var smtp = new SmtpClient();
             smtp.Connect(configSection["Host"], int.Parse(configSection["Port"] ?? string.Empty), SecureSocketOptions.StartTls);
@@ -87,7 +87,7 @@ namespace ConsultorioAPI.Service
 
         public async Task<string> PedirConfirmacao(Paciente paciente, string url)
         {
-            if (paciente.EmailConfirmado) return $"Email {FiltraEmail(paciente.Email)} já confirmado!";
+            if (paciente.EmailConfirmado) return $"Email já confirmado! ({FiltraEmail(paciente.Email)})";
             if (paciente.Email == string.Empty) return $"Email não preenchido!";
 
             await EnviarEmail("Paciente", paciente.Id, paciente.Email, paciente.Nome, url);
@@ -101,8 +101,8 @@ namespace ConsultorioAPI.Service
 
             var token = await _con.Tokens.FirstOrDefaultAsync(t => t.Id == paciente.Id);
             if (token is null) return "Email não confirmado.";
-            if (token.DataLimite >= DateTime.Now) return "Email não confirmado: Confirmação pendente.";
-            return "Email não confirmado: Confirmação expirada.";
+            if (token.DataLimite >= DateTime.Now) return "Email não confirmado: Solicitação pendente.";
+            return "Email não confirmado: Solicitação expirou.";
         }
     }
 }
