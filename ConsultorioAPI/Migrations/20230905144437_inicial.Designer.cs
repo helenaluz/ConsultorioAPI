@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConsultorioAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230904203240_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20230905144437_inicial")]
+    partial class inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

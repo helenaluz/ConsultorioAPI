@@ -1,7 +1,10 @@
-﻿namespace ConsultorioAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ConsultorioAPI.Models
 {
     public class Consulta
     {
+        [Key]
         public int Id { get; set; }
         public DateTime DataConsulta { get; set; }
         public string Descricao { get; set; } = string.Empty;
